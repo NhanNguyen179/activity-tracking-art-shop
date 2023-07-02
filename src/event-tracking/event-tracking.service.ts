@@ -37,10 +37,141 @@ export class EventTrackingService {
                         value: '$_id',
                         count: 1
                     }
-                },
+                }
             ])
             .exec();
 
+        return result;
+    }
+
+    async getPopularProduct() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $match: {
+                        Feature: Feature.VisitProductDetailPage
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$' + AttributeType.ProductName,
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { count: -1 } }
+            ])
+            .exec();
+        return result;
+    }
+
+    async getPopularCategory() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $match: {
+                        Feature: Feature.VisitProductDetailPage
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$' + AttributeType.CategoryName,
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+            .exec();
+        return result;
+    }
+    async getAmountUserAddAuctionProduct() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $match: {
+                        Feature: Feature.UserAddAuctionPrice
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$' + AttributeType.UserId,
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $count: 'result'
+                }
+            ])
+            .exec();
+        return result;
+    }
+
+    async getRecentAddAuctionPrice() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $project: {
+                        title: '$Feature',
+                        description: {
+                            $concat: ['$UserEmail', ' - ', '$Outcome']
+                        },
+                        postedAt: '$LocalTimestamp'
+                    }
+                },
+                { $sort: { LocalTimestamp: -1 } },
+                { $limit: 5 }
+            ])
+            .exec();
+        return result;
+    }
+    async getAmountSessionId() {
+        const result = await this.trackingEventModel
+            .distinct(`${AttributeType.SessionId}`)
+            .exec();
+        return result;
+    }
+
+    async getPopularBrowser() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $group: {
+                        _id: '$' + AttributeType.BrowserName,
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+            .exec();
+        return result;
+    }
+
+    async getTotalUserAddAuctionPrice() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $match: {
+                        Feature: Feature.UserAddAuctionPrice
+                    }
+                },
+                {
+                    $count: 'result'
+                }
+            ])
+            .exec();
+        return result;
+    }
+
+    async getTotalApprovedAuction() {
+        const result = await this.trackingEventModel
+            .aggregate([
+                {
+                    $match: {
+                        Feature: Feature.ApprovedAuctionProduct
+                    }
+                },
+                {
+                    $count: 'result'
+                }
+            ])
+            .exec();
         return result;
     }
 }
