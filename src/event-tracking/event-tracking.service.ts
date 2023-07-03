@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TrackingEvent } from 'src/schemas/eventTracking.schema';
+import { TrackingEvent } from '../schemas/eventTracking.schema';
 import { CreateEventTrackingDTO } from './dto/createEventDto';
 import { AttributeType, Feature } from './Types/Types';
 
