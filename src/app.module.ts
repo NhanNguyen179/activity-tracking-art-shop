@@ -7,7 +7,7 @@ import { EventTrackingModule } from './event-tracking/event-tracking.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/activity_tracking'),
+    MongooseModule.forRoot('mongodb+srv://nhanadmin:.Nhan17092001@cluster0.k0bbe.mongodb.net/'),
     EventTrackingModule,
   ],
   controllers: [AppController],
