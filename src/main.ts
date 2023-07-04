@@ -9,7 +9,7 @@ async function bootstrap() {
         { 
           origin: ['http://127.0.0.1:3000', 'https://localhost:3000', 'https://art-shop-fe.vercel.app/', 'http://art-shop-fe.vercel.app', 'http://art-shop-fe.vercel.app', 'https://ec2-34-198-71-168.compute-1.amazonaws.com', 'https://ec2-34-198-71-168.compute-1.amazonaws.com:8000'],
           methods: ['POST', 'PUT', 'DELETE', 'GET', 'OPTIONS'],
-          allowedHeaders: 'Content-Type,Authorization',
+          allowedHeaders: 'application/json',
         }
       );
     await app.listen(5000);
