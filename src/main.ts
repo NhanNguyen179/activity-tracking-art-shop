@@ -14,7 +14,6 @@ async function bootstrap() {
             'https://ec2-34-198-71-168.compute-1.amazonaws.com:8000'
         ],
         methods: ['GET, HEAD, PUT, POST, DELETE, OPTIONS, PATCH'],
-        credentials: true
     });
     await app.listen(5000);
     if (module.hot) {
