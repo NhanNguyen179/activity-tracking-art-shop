@@ -18,5 +18,8 @@
                 "OPTIONS"
             ]
         }
-    ]
+    ],
+    "headers": {
+        "Access-Control-Allow-Origin": "*"
+    }
 }
