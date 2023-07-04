@@ -14,9 +14,7 @@ async function bootstrap() {
             'https://ec2-34-198-71-168.compute-1.amazonaws.com:8000'
         ],
         methods: 'GET, HEAD, PUT, POST, DELETE, OPTIONS, PATCH',
-        credentials: true,
-        allowedHeaders:
-            'Origin, X-Requested-With, Content-Type, Accept, Authentication, Access-control-allow-credentials, Access-control-allow-headers, Access-control-allow-methods, Access-control-allow-origin, User-Agent, Referer, Accept-Encoding, Accept-Language, Access-Control-Request-Headers, Cache-Control, Pragma'
+        credentials: true
     });
     await app.listen(5000);
     if (module.hot) {
