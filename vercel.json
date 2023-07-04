@@ -10,17 +10,11 @@
         {
             "src": "/(.*)",
             "dest": "dist/main.js",
-            "methods": [
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE",
-                "PATCH",
-                "OPTIONS"
-            ],
+            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
             "headers": {
                 "Access-Control-Allow-Origin": "*"
             }
         }
-    ]
+    ],
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
