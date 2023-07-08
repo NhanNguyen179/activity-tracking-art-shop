@@ -116,7 +116,7 @@ export class EventTrackingService {
                         postedAt: '$LocalTimestamp'
                     }
                 },
-                { $sort: { LocalTimestamp: -1 } },
+                { $sort: { LocalTimestamp: 1 } },
                 { $limit: 5 }
             ])
             .exec();
