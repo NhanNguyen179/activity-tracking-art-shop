@@ -59,6 +59,10 @@ let EventTrackingController = class EventTrackingController {
         const respone = this.eventTrackingService.getTotalApprovedAuction();
         return respone;
     }
+    async getAmountUserAccessWebsite(groupByOption) {
+        const respone = this.eventTrackingService.getAmountUserAccessWebsite(groupByOption);
+        return respone;
+    }
 };
 __decorate([
     (0, common_1.Post)('/add-tracking-event'),
@@ -122,6 +126,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], EventTrackingController.prototype, "getTotalApprovedAuction", null);
+__decorate([
+    (0, common_1.Get)('/get-amount-user-access-website'),
+    __param(0, (0, common_1.Query)('groupByOption')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], EventTrackingController.prototype, "getAmountUserAccessWebsite", null);
 EventTrackingController = __decorate([
     (0, common_1.Controller)('event-tracking'),
     __metadata("design:paramtypes", [event_tracking_service_1.EventTrackingService])

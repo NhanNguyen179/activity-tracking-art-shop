@@ -173,6 +173,95 @@ let EventTrackingService = class EventTrackingService {
             .exec();
         return result;
     }
+    async getAmountUserAccessWebsite(groupByOption) {
+        const dateField = 'LocalTimestamp';
+        const sessionIdField = 'SessionId';
+        const result = await this.trackingEventModel.aggregate([
+            {
+                $addFields: {
+                    convertedDate: {
+                        $toDate: `$${dateField}`
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        sessionId: `$${sessionIdField}`,
+                        date: {
+                            $switch: {
+                                branches: [
+                                    {
+                                        case: { $eq: [groupByOption, 'day'] },
+                                        then: {
+                                            $dateToString: {
+                                                format: '%Y-%m-%d',
+                                                date: '$convertedDate'
+                                            }
+                                        }
+                                    },
+                                    {
+                                        case: { $eq: [groupByOption, 'week'] },
+                                        then: {
+                                            $dateToString: {
+                                                format: '%Y-%U',
+                                                date: '$convertedDate'
+                                            }
+                                        }
+                                    },
+                                    {
+                                        case: { $eq: [groupByOption, 'month'] },
+                                        then: {
+                                            $dateToString: {
+                                                format: '%Y-%m',
+                                                date: '$convertedDate'
+                                            }
+                                        }
+                                    }
+                                ],
+                                default: null
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    '_id.date': { $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id.date',
+                    sessionCounts: {
+                        $addToSet: '$_id.sessionId'
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    [groupByOption]: '$_id',
+                    sessionCount: { $size: '$sessionCounts' }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    dates: { $push: `$${groupByOption}` },
+                    sessionCounts: { $push: '$sessionCount' }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    dates: 1,
+                    sessionCounts: 1
+                }
+            }
+        ]);
+        return result;
+    }
 };
 __decorate([
     (0, mongoose_1.InjectModel)(eventTracking_schema_1.TrackingEvent.name),

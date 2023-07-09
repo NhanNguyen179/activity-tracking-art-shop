@@ -15,4 +15,5 @@ export declare class EventTrackingController {
     getPopularBrowser(): Promise<any[]>;
     getTotalUserAddAuctionPrice(): Promise<any[]>;
     getTotalApprovedAuction(): Promise<any[]>;
+    getAmountUserAccessWebsite(groupByOption: string): Promise<any[]>;
 }
