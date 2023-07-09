@@ -66,4 +66,10 @@ export class EventTrackingController {
         const respone = this.eventTrackingService.getTotalApprovedAuction();
         return respone;
     }
+
+    @Get('/get-amount-user-access-website')
+    async getAmountUserAccessWebsite(@Query('groupByOption') groupByOption: string) {
+        const respone = this.eventTrackingService.getAmountUserAccessWebsite(groupByOption);
+        return respone;
+    }
 }

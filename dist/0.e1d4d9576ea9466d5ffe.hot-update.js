@@ -1,183 +1,190 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { TrackingEvent } from '../schemas/eventTracking.schema';
-import { CreateEventTrackingDTO } from './dto/createEventDto';
-import { AttributeType, Feature } from './Types/Types';
+"use strict";
+exports.id = 0;
+exports.ids = null;
+exports.modules = {
 
-@Injectable()
-export class EventTrackingService {
-    @InjectModel(TrackingEvent.name)
-    private trackingEventModel: Model<TrackingEvent>;
-    async addTrackingEvent(CreateEventTrackingDTO: CreateEventTrackingDTO) {
+/***/ 12:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EventTrackingService = void 0;
+const common_1 = __webpack_require__(6);
+const mongoose_1 = __webpack_require__(9);
+const mongoose_2 = __webpack_require__(13);
+const eventTracking_schema_1 = __webpack_require__(14);
+const Types_1 = __webpack_require__(15);
+let EventTrackingService = class EventTrackingService {
+    async addTrackingEvent(CreateEventTrackingDTO) {
         const createdCat = new this.trackingEventModel(CreateEventTrackingDTO);
         console.log({ createdCat, CreateEventTrackingDTO });
         await createdCat.save();
         return;
     }
-
-    async getPopularCategoryOfUser(userId: string) {
+    async getPopularCategoryOfUser(userId) {
         console.log({ userId });
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.VisitProductDetailPage
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$' + AttributeType.CategoryName,
-                        count: { $sum: 1 }
-                    }
-                },
-                {
-                    $project: {
-                        _id: 0,
-                        value: '$_id',
-                        count: 1
-                    }
+            {
+                $match: {
+                    Feature: Types_1.Feature.VisitProductDetailPage
                 }
-            ])
+            },
+            {
+                $group: {
+                    _id: '$' + Types_1.AttributeType.CategoryName,
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    value: '$_id',
+                    count: 1
+                }
+            }
+        ])
             .exec();
-
         return result;
     }
-
     async getPopularProduct() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.VisitProductDetailPage
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$' + AttributeType.ProductName,
-                        count: { $sum: 1 }
-                    }
-                },
-                { $sort: { count: -1 } }
-            ])
+            {
+                $match: {
+                    Feature: Types_1.Feature.VisitProductDetailPage
+                }
+            },
+            {
+                $group: {
+                    _id: '$' + Types_1.AttributeType.ProductName,
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { count: -1 } }
+        ])
             .exec();
         return result;
     }
-
     async getPopularCategory() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.VisitProductDetailPage
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$' + AttributeType.CategoryName,
-                        count: { $sum: 1 }
-                    }
+            {
+                $match: {
+                    Feature: Types_1.Feature.VisitProductDetailPage
                 }
-            ])
+            },
+            {
+                $group: {
+                    _id: '$' + Types_1.AttributeType.CategoryName,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
             .exec();
         return result;
     }
     async getAmountUserAddAuctionProduct() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.UserAddAuctionPrice
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$' + AttributeType.UserId,
-                        count: { $sum: 1 }
-                    }
-                },
-                {
-                    $count: 'result'
+            {
+                $match: {
+                    Feature: Types_1.Feature.UserAddAuctionPrice
                 }
-            ])
+            },
+            {
+                $group: {
+                    _id: '$' + Types_1.AttributeType.UserId,
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $count: 'result'
+            }
+        ])
             .exec();
         return result;
     }
-
     async getRecentAddAuctionPrice() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $project: {
-                        title: '$Feature',
-                        description: {
-                            $concat: ['$UserEmail', ' - ', '$Outcome']
-                        },
-                        postedAt: '$LocalTimestamp'
-                    }
-                },
-                { $sort: { postedAt: -1 } },
-                { $limit: 5 }
-            ])
+            {
+                $project: {
+                    title: '$Feature',
+                    description: {
+                        $concat: ['$UserEmail', ' - ', '$Outcome']
+                    },
+                    postedAt: '$LocalTimestamp'
+                }
+            },
+            { $sort: { postedAt: -1 } },
+            { $limit: 5 }
+        ])
             .exec();
         return result;
     }
     async getAmountSessionId() {
         const result = await this.trackingEventModel
-            .distinct(`${AttributeType.SessionId}`)
+            .distinct(`${Types_1.AttributeType.SessionId}`)
             .exec();
         return result;
     }
-
     async getPopularBrowser() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $group: {
-                        _id: '$' + AttributeType.BrowserName,
-                        count: { $sum: 1 }
-                    }
+            {
+                $group: {
+                    _id: '$' + Types_1.AttributeType.BrowserName,
+                    count: { $sum: 1 }
                 }
-            ])
+            }
+        ])
             .exec();
         return result;
     }
-
     async getTotalUserAddAuctionPrice() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.UserAddAuctionPrice
-                    }
-                },
-                {
-                    $count: 'result'
+            {
+                $match: {
+                    Feature: Types_1.Feature.UserAddAuctionPrice
                 }
-            ])
+            },
+            {
+                $count: 'result'
+            }
+        ])
             .exec();
         return result;
     }
-
     async getTotalApprovedAuction() {
         const result = await this.trackingEventModel
             .aggregate([
-                {
-                    $match: {
-                        Feature: Feature.ApprovedAuctionProduct
-                    }
-                },
-                {
-                    $count: 'result'
+            {
+                $match: {
+                    Feature: Types_1.Feature.ApprovedAuctionProduct
                 }
-            ])
+            },
+            {
+                $count: 'result'
+            }
+        ])
             .exec();
         return result;
     }
-
-    async getAmountUserAccessWebsite(groupByOption: string) {
-        const dateField = 'LocalTimestamp'; // Replace 'yourDateField' with the actual field name in your model
-
+    async getAmountUserAccessWebsite() {
+        const dateField = 'LocalTimestamp';
+        let groupByOption = 'day';
         const sessionIdField = 'SessionId';
         const result = await this.trackingEventModel.aggregate([
             {
@@ -265,4 +272,26 @@ export class EventTrackingService {
         ]);
         return result;
     }
-}
+};
+__decorate([
+    (0, mongoose_1.InjectModel)(eventTracking_schema_1.TrackingEvent.name),
+    __metadata("design:type", typeof (_a = typeof mongoose_2.Model !== "undefined" && mongoose_2.Model) === "function" ? _a : Object)
+], EventTrackingService.prototype, "trackingEventModel", void 0);
+EventTrackingService = __decorate([
+    (0, common_1.Injectable)()
+], EventTrackingService);
+exports.EventTrackingService = EventTrackingService;
+
+
+/***/ })
+
+};
+exports.runtime =
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ /* webpack/runtime/getFullHash */
+/******/ (() => {
+/******/ 	__webpack_require__.h = () => ("c7ae91be4b6d10e43c27")
+/******/ })();
+/******/ 
+/******/ }
+;
